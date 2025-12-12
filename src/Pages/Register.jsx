@@ -21,6 +21,8 @@ const Register = () => {
     const name = e.target.name.value;
     const photoUrl = e.target.photoUrl;
     const file = photoUrl.files[0]
+    const role = e.target.role.value
+    
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
@@ -65,11 +67,12 @@ const Register = () => {
 
     const mainPhotoUrl = res.data.data.display_url
 
-    const formData ={
+    const formData = {
       email,
       pass,
-      name, 
-      mainPhotoUrl
+      name,
+      mainPhotoUrl,
+      role
     }
 
     registerwithemailandpassword(email, pass)
@@ -81,12 +84,12 @@ const Register = () => {
           .then(() => {
             setUser(userCredential.user)
             axios.post('http://localhost:5000/users', formData)
-            .then(res=>{
-              console.log(res.data)
-            })
-            .catch(err=>{
-              console.log(err)
-            })
+              .then(res => {
+                console.log(res.data)
+              })
+              .catch(err => {
+                console.log(err)
+              })
 
             Swal.fire({
               icon: "success",
@@ -197,7 +200,12 @@ const Register = () => {
               required
             />
           </div>
-
+          <select name="role" defaultValue="Choose Your Role" className="select">
+            <option disabled={true}>Choose Your Role</option>
+            <option role="donor">Donor</option>
+            <option role="volunteer">Volunteer</option>
+           
+          </select>
           <button
             type="button"
             onClick={googleSignUp}
