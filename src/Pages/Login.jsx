@@ -31,7 +31,7 @@ const Login = () => {
           timer: 1500,
           showConfirmButton: false,
         });
-        navigate("/profile");
+        navigate("/");
       })
       .catch((error) => {
         Swal.fire({

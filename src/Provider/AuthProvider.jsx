@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -15,7 +16,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-
+  const [role, setRole] = useState('');
   const registerwithemailandpassword = (email, pass) => {
     return createUserWithEmailAndPassword(auth, email, pass);
   };
@@ -30,28 +31,42 @@ const AuthProvider = ({ children }) => {
       .then(() => setUser(null))
       .finally(() => setLoading(false));
   };
+// console.log(user)
+ 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+
     });
 
-    return () => unsubscribe();
+    return () => 
+      unsubscribe()
+    
   }, []);
 
-  const authData = {
-    registerwithemailandpassword,
-    handlegooglesignin,
-    handlesingout,
-    setUser,
-    user,
-    loading,
-  };
+  useEffect(() => {
+    if (!user) return;
+    axios.get(`http://localhost:5000/users/role/${user.email}`)
+      .then(res => {
+        setRole(res.data.role)
+       
+      })
+  }, [user])
+console.log(role)
+const authData = {
+  registerwithemailandpassword,
+  handlegooglesignin,
+  handlesingout,
+  setUser,
+  user,
+  loading,
+};
 
-  return (
-    <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
-  );
+return (
+  <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
+);
 };
 
 export default AuthProvider;
