@@ -7,8 +7,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import axios from "axios";
-
+import axios from "axios"; 
 export const AuthContext = createContext();
 
 const googleProvider = new GoogleAuthProvider();
@@ -25,7 +24,7 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
-  const handlesingout = () => {
+  const handlesignout = () => {
     setLoading(true);
     return signOut(auth)
       .then(() => setUser(null))
@@ -58,7 +57,7 @@ console.log(role)
 const authData = {
   registerwithemailandpassword,
   handlegooglesignin,
-  handlesingout,
+  handlesignout,
   setUser,
   user,
   loading,

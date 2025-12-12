@@ -56,24 +56,29 @@ const Register = () => {
         text: "Password must contain at least one number.",
       });
     }
-    const res = await axios.post(`https://api.imgbb.com/1/upload?=600&key=e0b53ef860f1e0c2b3d9621289c57042`,
-      { image: file },
+    const form = new FormData();
+    form.append("image", file);
+    
+    const res = await axios.post(
+      "https://api.imgbb.com/1/upload?expiration=600&key=e0b53ef860f1e0c2b3d9621289c57042",
+      form,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       }
-    )
-
-    const mainPhotoUrl = res.data.data.display_url
-
+    );
+    
+    const mainPhotoUrl = res.data.data.display_url;
+    
     const formData = {
       email,
       pass,
       name,
       mainPhotoUrl,
-      role
-    }
+      role,
+    };
+    
 
     registerwithemailandpassword(email, pass)
       .then((userCredential) => {
@@ -99,7 +104,7 @@ const Register = () => {
               showConfirmButton: false,
             });
 
-            // navigate(location.state?.from || "/Profile");
+            navigate(location.state?.from || "/");
           })
           .catch((error) => {
             console.log(error);
