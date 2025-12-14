@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Provider/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import auth from "../Firebase/firebase.config";
@@ -14,6 +14,24 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+
+  const [upozillas, setUpozillas] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [district, setDistrict] = useState([])
+  const [upozilla, setUpozilla] = useState([])
+  useEffect(() => {
+    axios.get('/Upozilla.json')
+      .then(res => {
+        setUpozillas(res.data.upazilas)
+      })
+
+    axios.get('/District.json')
+      .then(res => {
+        setDistricts(res.data.districts)
+      })
+  }, [])
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -21,8 +39,8 @@ const Register = () => {
     const name = e.target.name.value;
     const photoUrl = e.target.photoUrl;
     const file = photoUrl.files[0]
-    const role = e.target.role.value
-    
+    const blood = e.target.blood.value
+
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
@@ -58,7 +76,7 @@ const Register = () => {
     }
     const form = new FormData();
     form.append("image", file);
-    
+
     const res = await axios.post(
       "https://api.imgbb.com/1/upload?expiration=600&key=e0b53ef860f1e0c2b3d9621289c57042",
       form,
@@ -68,17 +86,19 @@ const Register = () => {
         },
       }
     );
-    
+
     const mainPhotoUrl = res.data.data.display_url;
-    
+
     const formData = {
       email,
       pass,
       name,
       mainPhotoUrl,
-      role,
+      blood,
+      district,
+      upozilla
     };
-    
+
 
     registerwithemailandpassword(email, pass)
       .then((userCredential) => {
@@ -205,11 +225,31 @@ const Register = () => {
               required
             />
           </div>
-          <select name="role" defaultValue="Choose Your Role" className="select">
-            <option disabled={true}>Choose Your Role</option>
-            <option role="donor">Donor</option>
-            <option role="volunteer">Volunteer</option>
-           
+          <select name="blood" defaultValue="Choose Blood Group" className="select">
+            <option disabled={true}>Choose Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+
+          </select>
+          {/* district select  */}
+          <select value={district} onChange={(e)=> setDistrict(e.target.value)}   className="select">
+            <option disabled selected value=''> Select Your Disrict</option>
+            {
+              districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
+            }
+          </select>
+          {/* upazila select  */}
+          <select value={upozilla} onChange={(e)=> setUpozilla(e.target.value)}   className="select">
+            <option disabled selected value=''> Select Your Upazila</option>
+            {
+             upozillas.map(u => <option value={u?.name} key={u.id}>{u?.name}</option>)
+            }
           </select>
           <button
             type="button"

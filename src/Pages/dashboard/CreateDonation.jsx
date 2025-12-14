@@ -1,88 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../../Provider/AuthProvider";
 
-const CreateDonation = ({ user, isBlocked }) => {
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState("");
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
-  const [formData, setFormData] = useState({
-    requesterName: user?.name || "",
-    requesterEmail: user?.email || "",
-    recipientName: "",
-    recipientDistrict: "",
-    recipientUpazila: "",
-    hospitalName: "",
-    fullAddress: "",
-    bloodGroup: "",
-    donationDate: "",
-    donationTime: "",
-    requestMessage: "",
-    status: "pending",
-  });
+const CreateDonation = () => {
+  const { user } = useContext(AuthContext)
+  const [upozillas, setUpozillas] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [district, setDistrict] = useState([])
+  const [upozilla, setUpozilla] = useState([])
 
-  // Example: fetch district + upazila JSON from your backend or local file
+
+  const axiosSecure = useAxiosSecure()
+
   useEffect(() => {
-    fetch("/districts.json")
-      .then(res => res.json())
-      .then(data => setDistricts(data));
-  }, []);
+    axios.get('/Upozilla.json')
+      .then(res => {
+        setUpozillas(res.data.upazilas)
+      })
 
-  const handleDistrictChange = (e) => {
-    const dist = e.target.value;
-    setSelectedDistrict(dist);
+    axios.get('/District.json')
+      .then(res => {
+        setDistricts(res.data.districts)
+      })
+  }, [])
 
-    const districtData = districts.find(d => d.name === dist);
-    setUpazilas(districtData ? districtData.upazilas : []);
-
-    setFormData({ ...formData, recipientDistrict: dist });
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleRequest = (e) => {
     e.preventDefault();
+    const form = e.target
 
-    if (isBlocked) {
-      return alert("You are blocked. You cannot create a donation request.");
-    }
+    const requesterName = form.requesterName.value
+    const requesterEmail = form.requesterEmail.value
+    const recipientName = form.recipientName.value
+    const recipientUpozilla = form.recipientUpozilla.value
+    const recipientDistrict = form.recipientDistrict.value
+    const hospitalName = form.hospitalName.value
+    const fullAddress = form.fullAddress.value
+    const bloodGroup = form.bloodGroup.value
+    const donationDate = form.donationDate.value
+    const donationTime = form.donationTime.value
+    const requestMessage = form.requestMessage.value
 
-    try {
-      const res = await axios.post("/donation-requests", formData);
-      alert("Donation Request Created Successfully!");
-      console.log(res.data);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to create request");
+    const formData = {
+      bloodGroup,
+      requesterName,
+      requesterEmail,
+      recipientName,
+      recipientUpozilla,
+      recipientDistrict,
+      hospitalName,
+      fullAddress,
+      donationDate,
+      donationTime,
+      requestMessage,
+      donationStatus : "pending"
     }
-  };
+    axiosSecure.post('/requests',formData)
+    .then(res=>{
+      alert(res.data.insertedId)
+    }).catch(err=> console.log(err))
+  }
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-xl mt-6">
       <h2 className="text-2xl font-bold mb-4">Create Donation Request</h2>
 
-      {isBlocked && (
+      {/* {isBlocked && (
         <p className="text-red-600 font-semibold mb-4">
           ⚠ You are blocked. You cannot create a donation request.
         </p>
-      )}
+      )} */}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleRequest} className="space-y-4">
 
         {/* REQUESTER INFO */}
         <div className="grid md:grid-cols-2 gap-4">
           <input
             type="text"
-            value={formData.requesterName}
+            name="requesterName"
+            value={user?.displayName}
             readOnly
             className="input input-bordered w-full bg-gray-100"
           />
 
           <input
             type="email"
-            value={formData.requesterEmail}
+            name="requesterEmail"
+            value={user?.email}
             readOnly
             className="input input-bordered w-full bg-gray-100"
           />
@@ -93,40 +98,36 @@ const CreateDonation = ({ user, isBlocked }) => {
           type="text"
           name="recipientName"
           placeholder="Recipient Name"
-          value={formData.recipientName}
-          onChange={handleChange}
+          value={user?.name}
+
           className="input input-bordered w-full"
           required
         />
 
         {/* DISTRICT + UPAZILA */}
         <div className="grid md:grid-cols-2 gap-4">
+          {/* district select  */}
           <select
             name="recipientDistrict"
-            onChange={handleDistrictChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="">Select District</option>
-            {districts.map((dist, idx) => (
-              <option key={idx} value={dist.name}>
-                {dist.name}
-              </option>
-            ))}
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
+            className="select">
+            <option disabled selected value=''> Select Your Disrict</option>
+            {
+              districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
+            }
           </select>
 
+          {/* upazila select  */}
           <select
-            name="recipientUpazila"
-            onChange={handleChange}
-            className="select select-bordered w-full"
-            required
-          >
-            <option value="">Select Upazila</option>
-            {upazilas.map((up, idx) => (
-              <option key={idx} value={up}>
-                {up}
-              </option>
-            ))}
+            name="recipientUpozilla"
+            value={upozilla}
+            onChange={(e) => setUpozilla(e.target.value)}
+            className="select">
+            <option disabled selected value=''> Select Your Upazila</option>
+            {
+              upozillas.map(u => <option value={u?.name} key={u.id}>{u?.name}</option>)
+            }
           </select>
         </div>
 
@@ -135,18 +136,18 @@ const CreateDonation = ({ user, isBlocked }) => {
           type="text"
           name="hospitalName"
           placeholder="Hospital Name"
-          value={formData.hospitalName}
-          onChange={handleChange}
+          // value={formData.hospitalName}
+
           className="input input-bordered w-full"
           required
         />
 
-        <input
+        <input 
           type="text"
           name="fullAddress"
           placeholder="Full Address"
-          value={formData.fullAddress}
-          onChange={handleChange}
+          // value={formData.fullAddress}
+
           className="input input-bordered w-full"
           required
         />
@@ -154,8 +155,8 @@ const CreateDonation = ({ user, isBlocked }) => {
         {/* BLOOD GROUP */}
         <select
           name="bloodGroup"
-          value={formData.bloodGroup}
-          onChange={handleChange}
+          // value={formData.bloodGroup}
+
           className="select select-bordered w-full"
           required
         >
@@ -170,8 +171,8 @@ const CreateDonation = ({ user, isBlocked }) => {
           <input
             type="date"
             name="donationDate"
-            value={formData.donationDate}
-            onChange={handleChange}
+            // value={formData.donationDate}
+
             className="input input-bordered w-full"
             required
           />
@@ -179,8 +180,8 @@ const CreateDonation = ({ user, isBlocked }) => {
           <input
             type="time"
             name="donationTime"
-            value={formData.donationTime}
-            onChange={handleChange}
+            // value={formData.donationTime}
+
             className="input input-bordered w-full"
             required
           />
@@ -190,8 +191,8 @@ const CreateDonation = ({ user, isBlocked }) => {
         <textarea
           name="requestMessage"
           placeholder="Why do you need blood?"
-          value={formData.requestMessage}
-          onChange={handleChange}
+          // value={formData.requestMessage}
+
           className="textarea textarea-bordered w-full h-28"
           required
         />
@@ -199,7 +200,7 @@ const CreateDonation = ({ user, isBlocked }) => {
         {/* SUBMIT BUTTON */}
         <button
           type="submit"
-          className={`btn btn-primary w-full ${isBlocked && "btn-disabled"}`}
+          className={`btn btn-primary w-full `}
         >
           Submit Request
         </button>
