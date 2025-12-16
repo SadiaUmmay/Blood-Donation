@@ -15,6 +15,7 @@ import DonationRequest from './Pages/dashboard/DonationRequest.jsx'
 import CreateDonation from './Pages/dashboard/CreateDonation.jsx'
 import AllUsers from './Pages/dashboard/AllUsers.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
+import Search from './Pages/Search.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,8 +27,24 @@ const router = createBrowserRouter([
       },
       {
         path:'signup', Component: Register
+      },
+      {
+        path:"/donation-requests",
+        Component: DonationRequest
+      },
+      {
+        path:"/search",
+        Component: Search
       }
     ]
+  },
+  {
+    path:"/donation-requests",
+    Component: DonationRequest
+  },
+  {
+    path:"/search",
+    Component: Search
   },
   {
     path:"/dashboard",

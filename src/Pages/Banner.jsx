@@ -22,7 +22,7 @@ const Banner = () => {
             </Link>
 
             <Link
-              to="/search-donors"
+              to="/search"
               className="btn btn-outline btn-primary"
             >
               Search Donors
