@@ -16,6 +16,7 @@ import CreateDonation from './Pages/dashboard/CreateDonation.jsx'
 import AllUsers from './Pages/dashboard/AllUsers.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import Search from './Pages/Search.jsx'
+import AllDonationRequ from './Pages/dashboard/AllDonationRequ.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "allusers",
         Component: AllUsers
+      },
+      {
+        path: "all-blood-donation-request",
+        Component: AllDonationRequ
       }
     ]
   }

@@ -7,7 +7,7 @@ const ProfileDash = () => {
   const [profile, setProfile] = useState(null);
   const [editable, setEditable] = useState(false);
 
-  // Load user data from your server
+  // Load user data from server
   useEffect(() => {
     if (user?.email) {
       axios
