@@ -1,9 +1,12 @@
 import React from 'react';
+import Banner from './Banner';
+import FeaturedSection from './FeaturedSection';
 
 const Home = () => {
     return (
         <div>
-            <h1>home</h1>
+            <Banner></Banner>
+            <FeaturedSection></FeaturedSection>
         </div>
     );
 };

@@ -13,7 +13,7 @@ const Aside = () => {
   }
 
   return (
-    <aside className="w-64 min-h-screen bg-base-200 border-r p-5 hidden md:block">
+    <aside className="w-64 min-h-screen bg-base-200 border-r p-5 ">
       {/* Profile */}
       <div className="flex flex-col items-center gap-2 mb-8">
         <img
