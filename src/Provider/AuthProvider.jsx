@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
       .then(() => setUser(null))
       .finally(() => setLoading(false));
   };
-  // console.log(user)
+  console.log(user)
 
 
   useEffect(() => {
