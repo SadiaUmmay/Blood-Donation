@@ -8,4 +8,4 @@ const useAxios =()=>{
     return axiosInstance
 }
 
-export default useAxios
+export default useAxios;

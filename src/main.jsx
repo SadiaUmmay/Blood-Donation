@@ -17,6 +17,7 @@ import AllUsers from './Pages/dashboard/AllUsers.jsx'
 import PrivateRoute from './PrivateRoute.jsx'
 import Search from './Pages/Search.jsx'
 import AllDonationRequ from './Pages/dashboard/AllDonationRequ.jsx'
+import Funding from './Pages/Funding.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path:"/search",
         Component: Search
+      },
+      {
+        path:"/funding",
+        Component: Funding
       }
     ]
   },
@@ -46,6 +51,10 @@ const router = createBrowserRouter([
   {
     path:"/search",
     Component: Search
+  },
+  {
+    path:"/funding",
+    Component: Funding
   },
   {
     path:"/dashboard",

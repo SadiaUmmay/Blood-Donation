@@ -15,7 +15,7 @@ const AllUsers = () => {
 
     useEffect(() => {
 
-      fetchUsers
+      fetchUsers();
 
     }, [axiosSecure])
 

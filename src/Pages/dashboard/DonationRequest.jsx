@@ -54,7 +54,7 @@ const DonationRequest = () => {
                         {
                             myRequests.map((request, index) =>
                                 <tr>
-                                    <th>{index + 1}</th>
+                                    <th>{(currentPage * 10) + (index + 1)-10}</th>
                                     <td>{request.recipientName}</td>
                                     <td>{request.hospitalName}</td>
                                     <td>{request.bloodGroup}</td>

@@ -1,9 +1,10 @@
 import React from 'react';
+import DonationRequest from './DonationRequest';
 
 const BloodDonationRequest = () => {
     return (
         <div>
-            request
+            <DonationRequest></DonationRequest>
         </div>
     );
 };
