@@ -18,6 +18,9 @@ import PrivateRoute from './PrivateRoute.jsx'
 import Search from './Pages/Search.jsx'
 import AllDonationRequ from './Pages/dashboard/AllDonationRequ.jsx'
 import Funding from './Pages/Funding.jsx'
+import PaymentSuccess from './Pages/PaymentSuccess.jsx'
+import ManageDonation from './Pages/dashboard/ManageDonation.jsx'
+import EditDonationRequest from './Pages/dashboard/EditDonationRequest.jsx'
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +44,10 @@ const router = createBrowserRouter([
       {
         path:"/funding",
         Component: Funding
+      },
+      {
+        path:"/payment-success",
+        Component: PaymentSuccess
       }
     ]
   },
@@ -54,7 +61,15 @@ const router = createBrowserRouter([
   },
   {
     path:"/funding",
-    Component: Funding
+    element: <PrivateRoute><Funding></Funding></PrivateRoute>
+  },
+  {
+    path:"/payment-success",
+    Component: PaymentSuccess
+  },
+  {
+    path:"/edit-donation-request",
+    Component: EditDonationRequest
   },
   {
     path:"/dashboard",
@@ -81,17 +96,26 @@ const router = createBrowserRouter([
         Component: AllUsers
       },
       {
-        path: "all-blood-donation-request",
-        Component: AllDonationRequ
+        path:"/dashboard/edit-donation-request/:id",
+        Component: EditDonationRequest
+      }
+      ,
+      {
+        path:"edit-donation-request/:id",
+        Component: EditDonationRequest
+      },
+      {
+        path: "manage-donation-request",
+        Component: ManageDonation
       }
     ]
   }
 ])
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  <>
      <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </StrictMode>,
+  </>,
 )

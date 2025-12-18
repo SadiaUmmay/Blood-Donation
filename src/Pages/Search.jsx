@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import useAxios from "../../hooks/useAxios";
 
-const Search = ({ onSearch }) => {
+const Search = () => {
     const [upozillas, setUpozillas] = useState([])
     const [districts, setDistricts] = useState([])
     const [district, setDistrict] = useState([])
     const [upozilla, setUpozilla] = useState([])
-
+    const axiosInstance = useAxios();
 
     useEffect(() => {
         axios.get('/Upozilla.json')
@@ -20,17 +21,19 @@ const Search = ({ onSearch }) => {
             })
     }, []);
 
-
-
-
-    const handleSubmit = (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
-        if (onSearch); // send data to parent
+        const bloodGroup = e.target.bloodGroup.value;
+       
+        axiosInstance.get(`/search?bloodGroup=${bloodGroup}&district=${district}&upozilla=${upozilla}`)
+        .then(res=>{
+            console.log(res.data)
+        })
     };
 
     return (
         <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSearch}
             className="max-w-3xl mx-3 md:max-w-5xl md:mx-auto my-10 "
         >
             {/* Blood Group */}

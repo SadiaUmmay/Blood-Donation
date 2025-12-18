@@ -96,7 +96,8 @@ const Register = () => {
       mainPhotoUrl,
       blood,
       district,
-      upozilla
+      upozilla,
+      // role: 'volunteer'
     };
 
 

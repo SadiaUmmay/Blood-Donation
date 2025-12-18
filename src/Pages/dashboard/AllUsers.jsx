@@ -6,16 +6,16 @@ const AllUsers = () => {
 
     const axiosSecure = useAxiosSecure();
     const [users, setUsers] = useState([])
-    const fetchUsers = ()=>{
+    const fetchUsers = () => {
         axiosSecure.get('/users')
-        .then(res => {
-            setUsers(res.data)
-        })
+            .then(res => {
+                setUsers(res.data)
+            })
     }
 
     useEffect(() => {
 
-      fetchUsers();
+        fetchUsers();
 
     }, [axiosSecure])
 
@@ -26,6 +26,13 @@ const AllUsers = () => {
                 fetchUsers();
             })
     }
+
+    const makeVolunteer = (email) => {
+        axiosSecure
+          .patch(`/users/make-volunteer/${email}`)
+          .then(() => fetchUsers());
+      };
+      
     return (
         <div>
             <div className="overflow-x-auto">
@@ -100,6 +107,17 @@ const AllUsers = () => {
                                                 )
                                         }
                                     </th>
+                                    <th>
+                                    {user.role === 'donor' && (
+                                        <button
+                                            onClick={() => makeVolunteer(user.email)}
+                                            className="btn btn-xs btn-info"
+                                        >
+                                            Make Volunteer
+                                        </button>
+                                    )}
+                                    </th>
+
                                 </tr>
                             ))}
                     </tbody>

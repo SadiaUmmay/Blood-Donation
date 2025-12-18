@@ -80,9 +80,16 @@ const Aside = () => {
         )
        }
        {
-        role === 'admin' && (
+        role === 'admin' && 'volunteer' && (
           <Link to={"all-blood-donation-request"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
             All Blood Donation Request Page
+          </Link>
+        )
+       }
+        {
+        role === 'volunteer' && (
+          <Link to={"manage-donation-request"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
+             Manage Donation Requests
           </Link>
         )
        }
