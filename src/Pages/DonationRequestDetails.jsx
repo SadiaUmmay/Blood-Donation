@@ -17,6 +17,7 @@ const DonationRequestDetails = () => {
   useEffect(() => {
     if (!id) return;
 
+    
     setLoading(true);
     setError("");
 
@@ -32,7 +33,7 @@ const DonationRequestDetails = () => {
       });
   }, [id]);
 
-  /* ---------------- STATES ---------------- */
+ 
 
   if (loading) {
     return (
@@ -50,47 +51,37 @@ const DonationRequestDetails = () => {
     );
   }
 
-  /* ---------------- CONFIRM DONATION ---------------- */
-
   const confirmDonation = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const token = localStorage.getItem("access-token");
+      const token = await user.getIdToken(); 
+  
       const res = await axios.patch(
         `http://localhost:5000/requests/${id}/donate`,
-        { donorName: user?.displayName },
+        { donorName: user.displayName, donorEmail: user.email },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+  
       if (res.data.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Donation Confirmed!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-
-        setRequest((prev) => ({
+        setRequest(prev => ({
           ...prev,
           donationStatus: "inprogress",
-          donorName: user?.displayName,
-          donorEmail: user?.email,
+          donorName: user.displayName,
+          donorEmail: user.email,
         }));
-
         setModalOpen(false);
+        Swal.fire({ icon: "success", title: "Donation Confirmed!", timer: 1500, showConfirmButton: false });
+      } else {
+        Swal.fire("Error", "Donation could not be confirmed", "error");
       }
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to confirm donation",
-      });
+    } catch (err) {
+      console.error("Axios Error:", err.response || err.message);
+      Swal.fire("Error", "Failed to confirm donation", "error");
     }
   };
-
-  /* ---------------- UI ---------------- */
-
+  
+  
   return (
     <div className="max-w-3xl mx-auto p-6 bg-base-100 shadow rounded-lg">
       <h2 className="text-2xl font-semibold mb-6 text-center">
@@ -103,7 +94,7 @@ const DonationRequestDetails = () => {
         <p><strong>Blood Group:</strong> {request.bloodGroup}</p>
         <p><strong>Date:</strong> {request.date || request.donationDate}</p>
         <p><strong>Time:</strong> {request.time || request.donationTime}</p>
-        <p><strong>Note:</strong> {request.note || "N/A"}</p>
+        <p><strong>Note:</strong> {request.requestMessage || "N/A"}</p>
         <p><strong>Status:</strong> {request.donationStatus}</p>
       </div>
 
@@ -114,6 +105,7 @@ const DonationRequestDetails = () => {
       >
         Donate
       </button>
+
 
       {modalOpen && (
         <div className="modal modal-open">
