@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 
+
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Root from './Root/Root.jsx'
 import Home from './Pages/Home.jsx'
@@ -21,6 +22,10 @@ import Funding from './Pages/Funding.jsx'
 import PaymentSuccess from './Pages/PaymentSuccess.jsx'
 import ManageDonation from './Pages/dashboard/ManageDonation.jsx'
 import EditDonationRequest from './Pages/dashboard/EditDonationRequest.jsx'
+import PublicDonationRequ from './Pages/PublicDonationRequ.jsx'
+import DonationRequestDetails from './Pages/DonationRequestDetails.jsx'
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -35,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/donation-requests",
-        Component: DonationRequest
+        Component: PublicDonationRequ
       },
       {
         path:"/search",
@@ -46,6 +51,13 @@ const router = createBrowserRouter([
         Component: Funding
       },
       {
+        path:"/donation-request/:id",
+        element:
+         <PrivateRoute>
+           <DonationRequestDetails />
+         </PrivateRoute>
+     },
+      {
         path:"/payment-success",
         Component: PaymentSuccess
       }
@@ -53,7 +65,7 @@ const router = createBrowserRouter([
   },
   {
     path:"/donation-requests",
-    Component: DonationRequest
+    Component: PublicDonationRequ
   },
   {
     path:"/search",
@@ -70,6 +82,13 @@ const router = createBrowserRouter([
   {
     path:"/edit-donation-request",
     Component: EditDonationRequest
+  },
+  {
+     path:"/donation-request/:id",
+     element:
+      <PrivateRoute>
+        <DonationRequestDetails />
+      </PrivateRoute>
   },
   {
     path:"/dashboard",
@@ -101,8 +120,8 @@ const router = createBrowserRouter([
       }
       ,
       {
-        path:"edit-donation-request/:id",
-        Component: EditDonationRequest
+        path:"all-blood-donation-request",
+        Component: AllDonationRequ
       },
       {
         path: "manage-donation-request",
@@ -112,10 +131,10 @@ const router = createBrowserRouter([
   }
 ])
 
-createRoot(document.getElementById('root')).render(
-  <>
-     <AuthProvider>
+createRoot(document.getElementById("root")).render(
+  
+    <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </>,
-)
+ 
+);

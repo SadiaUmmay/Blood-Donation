@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
 const DonationRequest = () => {
@@ -61,7 +61,7 @@ const DonationRequest = () => {
             }
         });
     };
-    
+
     return (
         <div>
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
@@ -100,12 +100,12 @@ const DonationRequest = () => {
                                         </span>
                                     </td>
                                     <td className="space-x-2">
-                                        <button
-                                            className="btn btn-xs btn-info"
-                                        // onClick={() => handleView(request._id)}
+                                        <Link
+                                            to={`/donation-request/${request._id}`}
+                                            className="btn btn-xs btn-primary"
                                         >
                                             View
-                                        </button>
+                                        </Link>
                                         <button
                                             className="btn btn-xs btn-warning"
                                             onClick={() => navigate(`/dashboard/edit-donation-request/${request._id}`)}

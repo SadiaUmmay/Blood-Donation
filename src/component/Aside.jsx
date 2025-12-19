@@ -64,13 +64,11 @@ const Aside = () => {
           )
         }
         {/* create donation request  */}
-        {
-          role =='donor' && (
+       
           <NavLink to={"createdonation"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
             Create Donation Request
           </NavLink>
-          )
-         }
+       
          {/* all users  */}
        {
         role === 'admin' && (
@@ -80,14 +78,14 @@ const Aside = () => {
         )
        }
        {
-        role === 'admin' && 'volunteer' && (
+        role !== "donor" && (
           <Link to={"all-blood-donation-request"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
             All Blood Donation Request Page
           </Link>
         )
        }
         {
-        role === 'volunteer' && (
+        role !== 'donor' && (
           <Link to={"manage-donation-request"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
              Manage Donation Requests
           </Link>

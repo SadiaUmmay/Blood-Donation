@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Provider/AuthProvider";
+import Swal from "sweetalert2";
 
 const ProfileDash = () => {
   const { user } = useContext(AuthContext);
@@ -25,13 +26,38 @@ const ProfileDash = () => {
   };
 
   const handleSave = () => {
+    const updatedProfile = {
+      name: profile.name,
+      district: profile.district,
+      upozilla: profile.upozilla,
+      bloodGroup: profile.bloodGroup,
+    };
+  
     axios
-      .patch(`http://localhost:5000/users/${profile._id}`, profile)
+      .patch(`http://localhost:5000/users/${profile._id}`, updatedProfile)
       .then(() => {
-        setEditable(false);
-      })
-      .catch((err) => console.log(err));
+        setEditable(false)
+         //  Success Swal
+      Swal.fire({
+        icon: "success",
+        title: "Saved!",
+        text: "Profile updated successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    })
+    .catch(() => {
+      // Error Swal
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Something went wrong. Please try again.",
+      });
+    });
   };
+      
+  
+  
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-base-200 rounded-xl shadow-md">
@@ -114,8 +140,8 @@ const ProfileDash = () => {
           </label>
           <input
             type="text"
-            name="upazila"
-            value={profile.upazila || ""}
+            name="upozilla"
+            value={profile.upozilla || ""}
             onChange={handleChange}
             disabled={!editable}
             className="input input-bordered w-full"

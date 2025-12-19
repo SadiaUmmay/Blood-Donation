@@ -8,7 +8,8 @@ const Search = () => {
     const [district, setDistrict] = useState([])
     const [upozilla, setUpozilla] = useState([])
     const axiosInstance = useAxios();
-
+    const [searched, setSearched] = useState(false);
+    const [donors, setDonors] = useState([]);
     useEffect(() => {
         axios.get('/Upozilla.json')
             .then(res => {
@@ -24,11 +25,13 @@ const Search = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         const bloodGroup = e.target.bloodGroup.value;
-       
+
         axiosInstance.get(`/search?bloodGroup=${bloodGroup}&district=${district}&upozilla=${upozilla}`)
-        .then(res=>{
-            console.log(res.data)
-        })
+            .then(res => {
+                setDonors(res.data);
+                setSearched(true);
+                console.log(res.data)
+            })
     };
 
     return (
@@ -36,6 +39,7 @@ const Search = () => {
             onSubmit={handleSearch}
             className="max-w-3xl mx-3 md:max-w-5xl md:mx-auto my-10 "
         >
+            <h1 className="text-3xl font-bold text-center my-6">Search Here for Donor</h1>
             {/* Blood Group */}
             <select
                 name="bloodGroup"
@@ -85,6 +89,27 @@ const Search = () => {
             <button type="submit" className="btn btn-primary w-full">
                 Search
             </button>
+            {/* 📋 Search Result */}
+            {searched && (
+                donors.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-10">
+                        {donors.map(donor => (
+                            <div key={donor._id} className="card bg-base-100 shadow p-4">
+                                <h3 className="font-semibold">{donor.name}</h3>
+                                <p>Blood: {donor.bloodGroup}</p>
+                                <p>District: {donor.recipientDistrict}</p>
+                                <p>Upazila: {donor.recipientUpozilla}</p>
+
+
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-center text-gray-500">
+                        No donors found
+                    </p>
+                )
+            )}
         </form>
     );
 };

@@ -31,7 +31,7 @@ const MainDashBoard = () => {
         Welcome, <span className="text-primary">{user?.displayName}</span> 👋
       </h1>
       {
-        role === 'volunteer' &&(
+        role !== 'donor' &&(
           <VolunteerDashboardHome></VolunteerDashboardHome>
         )
       }

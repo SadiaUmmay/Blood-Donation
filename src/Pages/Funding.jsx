@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import useAxios from '../../hooks/useAxios';
 import { AuthContext } from '../Provider/AuthProvider';
 import { useNavigate } from 'react-router';
+import FundList from './FundList';
 
 const Funding = () => {
     const axiosInstance = useAxios();
@@ -28,6 +29,7 @@ const Funding = () => {
     }
     return (
         <div>
+            <FundList></FundList>
 
             <form onSubmit={handleCheckout} className=" max-w-7xl mx-auto my-10">
                 {/* FUND AMOUNT */}

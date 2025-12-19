@@ -32,6 +32,12 @@ const AllUsers = () => {
           .patch(`/users/make-volunteer/${email}`)
           .then(() => fetchUsers());
       };
+
+    const makeAdmin = (email)=>{
+        axiosSecure
+        .patch(`/users/make-admin/${email}`)
+        .then(()=> fetchUsers());
+    }
       
     return (
         <div>
@@ -114,6 +120,16 @@ const AllUsers = () => {
                                             className="btn btn-xs btn-info"
                                         >
                                             Make Volunteer
+                                        </button>
+                                    )}
+                                    </th>
+                                    <th>
+                                    {user.role !== 'admin' && (
+                                        <button
+                                            onClick={() => makeAdmin(user.email)}
+                                            className="btn btn-xs btn-info"
+                                        >
+                                            Make Admin
                                         </button>
                                     )}
                                     </th>
