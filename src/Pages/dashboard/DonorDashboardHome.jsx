@@ -46,7 +46,7 @@ const DonorDashboardHome = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg p-6 rounded-xl mt-6">
+    <div className="bg-white md:shadow-lg shadow-xs rounded-sm md:rounded-xl mt-6 overflow-x-auto  w-50 md:w-6xl  mx-auto p-1 md:p-6">
       {requests.length > 0 && (
         <>
           <h2 className="text-2xl font-bold mb-4">Recent Donation Requests</h2>

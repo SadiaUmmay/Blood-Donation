@@ -26,7 +26,7 @@ const Aside = () => {
   }
 
   return (
-    <aside className="w-64 min-h-screen bg-base-200 border-r p-5 ">
+    <aside className="w-64 min-h-screen overflow-x-hidden bg-base-200 border-r md:p-5 p-1 ">
       {/* Profile */}
       <div className="flex flex-col items-center gap-2 mb-8">
         {/* Avatar */}
@@ -84,13 +84,7 @@ const Aside = () => {
           </Link>
         )
        }
-        {
-        role !== 'donor' && (
-          <Link to={"manage-donation-request"} className="px-3 py-2 rounded-lg hover:bg-base-300 cursor-pointer">
-             Manage Donation Requests
-          </Link>
-        )
-       }
+      
       </nav>
 
       {/* Logout */}

@@ -1,57 +1,52 @@
-import React, { useContext } from 'react';
-import useAxios from '../../hooks/useAxios';
-import { AuthContext } from '../Provider/AuthProvider';
-import { useNavigate } from 'react-router';
-import FundList from './FundList';
+// Pages/Funding.jsx
+import React, { useContext } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../Provider/AuthProvider";
+import FundList from "./FundList";
+import PaymentSuccess from "./PaymentSuccess";
 
 const Funding = () => {
-    const axiosInstance = useAxios();
-    const {user} = useContext(AuthContext)
-    const navigate= useNavigate()
+  const axiosSecure = useAxiosSecure();
+  const { user } = useContext(AuthContext);
 
-    const handleCheckout = (e) => {
-        e.preventDefault();
-        const fundAmount = e.target.fundAmount.value;
-        const fundEmail = user?.email;
-        const fundName = user?.displayName
+  const handleCheckout = async (e) => {
+    e.preventDefault();
+    const fundAmount = e.target.fundAmount.value;
 
-        const formData = {
-            fundAmount,
-            fundEmail,
-            fundName
-        }
+    const formData = {
+      fundAmount,
+      fundEmail: user?.email,
+      fundName: user?.displayName,
+    };
 
-        axiosInstance.post('/create-payment-checkout', formData)
-        .then(res=>{
-            console.log(res.data)
-         window.location.href=   res.data.url
-        })
+    try {
+      const res = await axiosSecure.post("/create-payment-checkout", formData);
+      window.location.href = res.data.url; 
+    } catch (err) {
+      console.error(err);
+      alert("Failed to initiate payment");
     }
-    return (
-        <div>
-            <FundList></FundList>
+  };
 
-            <form onSubmit={handleCheckout} className=" max-w-7xl mx-auto my-10">
-                {/* FUND AMOUNT */}
-                <input
-                    type="number"
-                    name="fundAmount"
-                    placeholder="Enter Fund Amount (BDT)"
-                    className="input input-bordered mr-2"
-                    min="5"
-                    required
-                />
+  return (
+    <div>
+     
 
-                <button
-                    // onClick={() => setOpen(true)}
-                    className="btn btn-primary"
-                >
-                    💳 Give Fund
-                </button>
-            </form>
-
-        </div>
-    );
+      <form onSubmit={handleCheckout} className="max-w-2xl mx-auto my-10">
+        <input
+          type="number"
+          name="fundAmount"
+          placeholder="Enter Fund Amount (BDT)"
+          className="input input-bordered mr-2"
+          min="5"
+          required
+        />
+        <button className="btn btn-primary">💳 Give Fund</button>
+      </form>
+      <FundList />
+     
+    </div>
+  );
 };
 
 export default Funding;

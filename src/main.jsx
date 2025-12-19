@@ -20,7 +20,6 @@ import Search from './Pages/Search.jsx'
 import AllDonationRequ from './Pages/dashboard/AllDonationRequ.jsx'
 import Funding from './Pages/Funding.jsx'
 import PaymentSuccess from './Pages/PaymentSuccess.jsx'
-import ManageDonation from './Pages/dashboard/ManageDonation.jsx'
 import EditDonationRequest from './Pages/dashboard/EditDonationRequest.jsx'
 import PublicDonationRequ from './Pages/PublicDonationRequ.jsx'
 import DonationRequestDetails from './Pages/DonationRequestDetails.jsx'
@@ -51,12 +50,12 @@ const router = createBrowserRouter([
         Component: Funding
       },
       {
-        path:"/donation-request/:id",
-        element:
-         <PrivateRoute>
-           <DonationRequestDetails />
-         </PrivateRoute>
-     },
+     path:"/donation-request/:id",
+     element:
+      <PrivateRoute>
+        <DonationRequestDetails />
+      </PrivateRoute>
+  },
       {
         path:"/payment-success",
         Component: PaymentSuccess
@@ -122,11 +121,8 @@ const router = createBrowserRouter([
       {
         path:"all-blood-donation-request",
         Component: AllDonationRequ
-      },
-      {
-        path: "manage-donation-request",
-        Component: ManageDonation
       }
+      
     ]
   }
 ])

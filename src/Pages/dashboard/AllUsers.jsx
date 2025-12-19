@@ -41,7 +41,8 @@ const AllUsers = () => {
       
     return (
         <div>
-            <div className="overflow-x-auto">
+    <div className=" overflow-x-auto  w-50 md:w-6xl  mx-auto p-1 md:p-6">
+          
                 <table className="table">
                     {/* head */}
                     <thead>
