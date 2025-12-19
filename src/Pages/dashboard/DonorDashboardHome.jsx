@@ -72,22 +72,21 @@ const DonorDashboardHome = () => {
                     <td>{req.donationDate}</td>
                     <td>{req.donationTime}</td>
                     <td>
-                      <span className={`badge ${
-                        req.donationStatus === "pending" ? "badge-warning" :
-                        req.donationStatus === "inprogress" ? "badge-info" :
-                        req.donationStatus === "done" ? "badge-success" :
-                        "badge-error"
-                      }`}>
+                      <span className={`badge ${req.donationStatus === "pending" ? "badge-warning" :
+                          req.donationStatus === "inprogress" ? "badge-info" :
+                            req.donationStatus === "done" ? "badge-success" :
+                              "badge-error"
+                        }`}>
                         {req.donationStatus}
                       </span>
                     </td>
                     <td className="space-x-2">
-                      <button
-                        className="btn btn-xs btn-info"
-                        onClick={() => handleView(req._id)}
+                      <Link
+                        to={`/donation-request/${req._id}`}
+                        className="btn btn-xs btn-primary"
                       >
                         View
-                      </button>
+                      </Link>
                       <button
                         className="btn btn-xs btn-warning"
                         onClick={() => navigate(`/dashboard/edit-donation-request/${req._id}`)}

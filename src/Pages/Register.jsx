@@ -158,7 +158,7 @@ const Register = () => {
           showConfirmButton: false,
         });
 
-        navigate(location.state?.from || "/Profile");
+        navigate(location.state?.from || "/");
       })
       .catch((error) => {
         console.log(error);
