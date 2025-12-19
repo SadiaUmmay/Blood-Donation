@@ -68,12 +68,6 @@ const CreateDonation = () => {
     <div className="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-xl mt-6">
       <h2 className="text-2xl font-bold mb-4">Create Donation Request</h2>
 
-      {/* {isBlocked && (
-        <p className="text-red-600 font-semibold mb-4">
-          ⚠ You are blocked. You cannot create a donation request.
-        </p>
-      )} */}
-
       <form onSubmit={handleRequest} className="space-y-4">
 
         {/* REQUESTER INFO */}

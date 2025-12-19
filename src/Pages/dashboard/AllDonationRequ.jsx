@@ -79,9 +79,6 @@ const AllDonationRequ = () => {
   return (
     <div className=" overflow-x-auto  w-50 md:w-6xl  mx-auto p-1 md:p-6">
       <h2 className="text-2xl font-bold mb-4">All Blood Donation Requests</h2>
-
-
-
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full min-w-[900px] scroll-auto">
           <thead>
