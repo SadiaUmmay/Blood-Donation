@@ -109,7 +109,7 @@ const Register = () => {
         })
           .then(() => {
             setUser(userCredential.user)
-            axios.post('http://localhost:5000/users', formData)
+            axios.post('https://blooddonation-nu.vercel.app/users', formData)
               .then(res => {
                 console.log(res.data)
               })

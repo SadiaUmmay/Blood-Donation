@@ -12,7 +12,7 @@ const ProfileDash = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:5000/users/role/${user.email}`)
+        .get(`https://blooddonation-nu.vercel.app/users/role/${user.email}`)
         .then((res) => setProfile(res.data))
         .catch((err) => console.log(err));
     }
@@ -34,7 +34,7 @@ const ProfileDash = () => {
     };
   
     axios
-      .patch(`http://localhost:5000/users/${profile._id}`, updatedProfile)
+      .patch(`https://blooddonation-nu.vercel.app/users/${profile._id}`, updatedProfile)
       .then(() => {
         setEditable(false)
          //  Success Swal
