@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const DonorDashboardHome = () => {
   const axiosSecure = useAxiosSecure();
@@ -40,10 +40,6 @@ const DonorDashboardHome = () => {
     });
   };
 
-  // View Request
-  const handleView = (id) => {
-    navigate(`/dashboard/view-donation-request/${id}`);
-  };
 
   return (
     <div className="bg-white md:shadow-lg shadow-xs rounded-sm md:rounded-xl mt-6 overflow-x-auto  w-50 md:w-6xl  mx-auto p-1 md:p-6">
