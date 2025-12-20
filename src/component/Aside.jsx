@@ -14,7 +14,7 @@ const Aside = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`https://blooddonation-nu.vercel.app/users/role/${user.email}`)
+        .get(`http://localhost:5000/users/role/${user.email}`)
         .then((res) => setProfile(res.data))
         .catch((err) => console.log(err));
     }

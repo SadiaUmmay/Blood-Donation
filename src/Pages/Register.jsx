@@ -14,160 +14,153 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [upozillas, setUpozillas] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [district, setDistrict] = useState("");
+  const [upozilla, setUpozilla] = useState("");
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [upozillas, setUpozillas] = useState([])
-  const [districts, setDistricts] = useState([])
-  const [district, setDistrict] = useState([])
-  const [upozilla, setUpozilla] = useState([])
   useEffect(() => {
-    axios.get('/Upozilla.json')
-      .then(res => {
-        setUpozillas(res.data.upazilas)
-      })
+    axios.get("/Upozilla.json").then((res) => setUpozillas(res.data.upazilas));
+    axios.get("/District.json").then((res) => setDistricts(res.data.districts));
 
-    axios.get('/District.json')
-      .then(res => {
-        setDistricts(res.data.districts)
-      })
-  }, [])
-  
+    axios
+      .get("http://localhost:5000/users")
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const email = e.target.email.value;
     const pass = e.target.password.value;
     const name = e.target.name.value;
     const photoUrl = e.target.photoUrl;
-    const file = photoUrl.files[0]
-    const blood = e.target.blood.value
-
+    const file = photoUrl.files[0];
+    const blood = e.target.blood.value;
 
     const uppercase = /[A-Z]/;
     const lowercase = /[a-z]/;
     const number = /[0-9]/;
 
-    if (pass.length < 8) {
+    if (
+      pass.length < 8 ||
+      !uppercase.test(pass) ||
+      !lowercase.test(pass) ||
+      !number.test(pass)
+    ) {
+      setLoading(false);
       return Swal.fire({
         icon: "warning",
         title: "Weak Password",
-        text: "Password must contain at least 8 characters.",
+        text: "Password must be at least 8 characters, include uppercase, lowercase and number.",
       });
     }
-    if (!uppercase.test(pass)) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Weak Password",
-        text: "Password must contain at least one uppercase letter.",
-      });
-    }
-    if (!lowercase.test(pass)) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Weak Password",
-        text: "Password must contain at least one lowercase letter.",
-      });
-    }
-    if (!number.test(pass)) {
-      return Swal.fire({
-        icon: "warning",
-        title: "Weak Password",
-        text: "Password must contain at least one number.",
-      });
-    }
+
     const form = new FormData();
     form.append("image", file);
 
-    const res = await axios.post(
-      "https://api.imgbb.com/1/upload?expiration=600&key=e0b53ef860f1e0c2b3d9621289c57042",
-      form,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    try {
+      const res = await axios.post(
+        "https://api.imgbb.com/1/upload?expiration=600&key=e0b53ef860f1e0c2b3d9621289c57042",
+        form,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
 
-    const mainPhotoUrl = res.data.data.display_url;
+      const mainPhotoUrl = res.data.data.display_url;
 
-    const formData = {
-      email,
-      pass,
-      name,
-      mainPhotoUrl,
-      blood,
-      district,
-      upozilla,
-      // role: 'volunteer'
-    };
+      const formData = {
+        email,
+        pass,
+        name,
+        mainPhotoUrl,
+        blood,
+        district,
+        upozilla,
+        role: "donor",
+        status: "active",
+        createdAt: new Date(),
+      };
 
-
-    registerwithemailandpassword(email, pass)
-      .then((userCredential) => {
-        updateProfile(auth.currentUser, {
-          displayName: name,
-          photoURL: mainPhotoUrl,
-        })
-          .then(() => {
-            setUser(userCredential.user)
-            axios.post('https://blooddonation-nu.vercel.app/users', formData)
-              .then(res => {
-                console.log(res.data)
-              })
-              .catch(err => {
-                console.log(err)
-              })
-
-            Swal.fire({
-              icon: "success",
-              title: "Registration Successful",
-              text: "Your account has been created successfully!",
-              timer: 2000,
-              showConfirmButton: false,
-            });
-
-            navigate(location.state?.from || "/");
-          })
-          .catch((error) => {
-            console.log(error);
-            Swal.fire({
-              icon: "error",
-              title: "Profile Update Failed",
-              text: error.message || "Something went wrong!",
-            });
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          icon: "error",
-          title: "Registration Failed",
-          text: error.message || "Something went wrong!",
-        });
+      // Register in Firebase
+      const userCredential = await registerwithemailandpassword(email, pass);
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL: mainPhotoUrl,
       });
+      setUser(userCredential.user);
+
+      const { data: newUser } = await axios.post(
+        "http://localhost:5000/users",
+        formData
+      );
+      setUsers((prev) => [...prev, newUser]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful",
+        text: "Your account has been created successfully!",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      navigate(location.state?.from || "/");
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message || "Something went wrong!",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
-  const googleSignUp = () => {
-    handlegooglesignin()
-      .then((result) => {
-        setUser(result.user);
 
-        Swal.fire({
-          icon: "success",
-          title: "Google Sign Up Successful",
-          text: "You are now logged in!",
-          timer: 2000,
-          showConfirmButton: false,
-        });
+  const googleSignUp = async () => {
+    setLoading(true);
+    try {
+      const result = await handlegooglesignin();
+      const user = result.user;
+      setUser(user);
 
-        navigate(location.state?.from || "/");
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          icon: "error",
-          title: "Google Sign Up Failed",
-          text: error.message || "Something went wrong!",
-        });
+      const formData = {
+        email: user.email,
+        name: user.displayName,
+        mainPhotoUrl: user.photoURL,
+        role: "donor",
+        status: "active",
+        createdAt: new Date(),
+      };
+
+      const { data: newUser } = await axios.post(
+        "http://localhost:5000/users",
+        formData
+      );
+      setUsers((prev) => [...prev, newUser]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Google Sign Up Successful",
+        text: "You are now logged in!",
+        timer: 2000,
+        showConfirmButton: false,
       });
+
+      navigate(location.state?.from || "/");
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Google Sign Up Failed",
+        text: error.message || "Something went wrong!",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -175,83 +168,73 @@ const Register = () => {
       <div className="card bg-base-100 w-full max-w-sm shadow-2xl p-6">
         <h2 className="text-3xl font-bold text-center mb-4">Create Account</h2>
 
+        {loading && <p className="text-center mb-2">Loading...</p>}
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              name="email"
-              type="email"
-              className="input input-bordered"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            className="input input-bordered"
+            required
+          />
+          <input
+            name="name"
+            type="text"
+            placeholder="Name"
+            className="input input-bordered"
+            required
+          />
+          <input name="photoUrl" type="file" className="input input-bordered" />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            className="input input-bordered"
+            required
+          />
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Name</span>
-            </label>
-            <input
-              name="name"
-              type="text"
-              className="input input-bordered"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Photo URL</span>
-            </label>
-            <input
-              name="photoUrl"
-              type="file"
-              className="input input-bordered"
-              placeholder="Enter your photo URL"
-            />
-          </div>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              name="password"
-              type="password"
-              className="input input-bordered"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <select name="blood" defaultValue="Choose Blood Group" className="select">
-            <option disabled={true}>Choose Blood Group</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-
+          <select name="blood" className="select" defaultValue="">
+            <option disabled value="">
+              Choose Blood Group
+            </option>
+            {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((b) => (
+              <option key={b} value={b}>
+                {b}
+              </option>
+            ))}
           </select>
-          {/* district select  */}
-          <select value={district} onChange={(e)=> setDistrict(e.target.value)}   className="select">
-            <option disabled selected value=''> Select Your Disrict</option>
-            {
-              districts.map(d => <option value={d?.name} key={d.id}>{d?.name}</option>)
-            }
+
+          <select
+            value={district}
+            onChange={(e) => setDistrict(e.target.value)}
+            className="select"
+          >
+            <option disabled value="">
+              Select Your District
+            </option>
+            {districts.map((d) => (
+              <option key={d.id} value={d.name}>
+                {d.name}
+              </option>
+            ))}
           </select>
-          {/* upazila select  */}
-          <select value={upozilla} onChange={(e)=> setUpozilla(e.target.value)}   className="select">
-            <option disabled selected value=''> Select Your Upazila</option>
-            {
-             upozillas.map(u => <option value={u?.name} key={u.id}>{u?.name}</option>)
-            }
+
+          <select
+            value={upozilla}
+            onChange={(e) => setUpozilla(e.target.value)}
+            className="select"
+          >
+            <option disabled value="">
+              Select Your Upazila
+            </option>
+            {upozillas.map((u) => (
+              <option key={u.id} value={u.name}>
+                {u.name}
+              </option>
+            ))}
           </select>
+
           <button
             type="button"
             onClick={googleSignUp}
@@ -260,17 +243,16 @@ const Register = () => {
             <FcGoogle /> Google Sign Up
           </button>
 
-          <div className="text-sm text-center">
-            Already have an account?{" "}
-            <Link to="/Login" className="link link-primary">
-              Login
-            </Link>
-          </div>
+          <Link to="/Login" className="link link-primary text-center block">
+            Already have an account? Login
+          </Link>
 
           <button type="submit" className="btn btn-neutral w-full">
             Register
           </button>
         </form>
+
+
       </div>
     </div>
   );

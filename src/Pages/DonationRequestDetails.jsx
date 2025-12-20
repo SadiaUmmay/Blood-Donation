@@ -22,7 +22,7 @@ const DonationRequestDetails = () => {
     setError("");
 
     axios
-      .get(`https://blooddonation-nu.vercel.app/donation-requests/${id}`)
+      .get(`http://localhost:5000/donation-requests/${id}`)
       .then((res) => {
         setRequest(res.data);
         setLoading(false);
@@ -58,7 +58,7 @@ const DonationRequestDetails = () => {
       const token = await user.getIdToken(); 
   
       const res = await axios.patch(
-        `https://blooddonation-nu.vercel.app/requests/${id}/donate`,
+        `http://localhost:5000/requests/${id}/donate`,
         { donorName: user.displayName, donorEmail: user.email },
         { headers: { Authorization: `Bearer ${token}` } }
       );
