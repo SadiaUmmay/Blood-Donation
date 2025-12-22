@@ -66,7 +66,7 @@ const Login = () => {
         createdAt: new Date(),
       };
 
-      await axios.post("http://localhost:5000/users", formData);
+      await axios.post("https://blooddonation-nu.vercel.app/users", formData);
 
       Swal.fire({
         icon: "success",
@@ -91,64 +91,64 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center">
-      <div className="card bg-base-100 w-full max-w-sm shadow-2xl p-6">
-        <h2 className="text-3xl font-bold text-center mb-4">Welcome Back</h2>
+    <div className="card bg-base-100 w-full max-w-sm shadow-2xl p-6">
+      <h2 className="text-3xl font-bold text-center mb-4">Welcome Back</h2>
 
-        {loading && <p className="text-center mb-2">Loading...</p>}
+      {loading && <p className="text-center mb-2">Loading...</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email Input */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              name="email"
-              type="email"
-              className="input input-bordered"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Email Input */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Email</span>
+          </label>
+          <input
+            name="email"
+            type="email"
+            className="input input-bordered"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
 
-          {/* Password Input */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              name="password"
-              type="password"
-              className="input input-bordered"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
+        {/* Password Input */}
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Password</span>
+          </label>
+          <input
+            name="password"
+            type="password"
+            className="input input-bordered"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
 
-          {/* Login Button */}
-          <button type="submit" className="btn btn-neutral w-full mt-2">
-            Login
-          </button>
+        {/* Login Button */}
+        <button type="submit" className="btn btn-neutral w-full mt-2">
+          Login
+        </button>
 
-          {/* Register Redirect */}
-          <div className="text-sm text-center mt-2">
-            Don’t have an account?
-            <Link to="/signup" className="link link-primary ml-1">
-              Register
-            </Link>
-          </div>
+        {/* Register Redirect */}
+        <div className="text-sm text-center mt-2">
+          Don’t have an account?
+          <Link to="/signup" className="link link-primary ml-1">
+            Register
+          </Link>
+        </div>
 
-          {/* Google Login */}
-          <button
-            type="button"
-            onClick={googleSignIn}
-            className="btn justify-center btn-outline w-full gap-2"
-          >
-            <FcGoogle /> Google Sign In
-          </button>
-        </form>
-      </div>
+        {/* Google Login */}
+        <button
+          type="button"
+          onClick={googleSignIn}
+          className="btn justify-center btn-outline w-full gap-2"
+        >
+          <FcGoogle /> Google Sign In
+        </button>
+      </form>
     </div>
+  </div>
   );
 };
 

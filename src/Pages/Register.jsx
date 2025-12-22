@@ -26,7 +26,7 @@ const Register = () => {
     axios.get("/District.json").then((res) => setDistricts(res.data.districts));
 
     axios
-      .get("http://localhost:5000/users")
+      .get("https://blooddonation-nu.vercel.app/users")
       .then((res) => setUsers(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -94,7 +94,7 @@ const Register = () => {
       setUser(userCredential.user);
 
       const { data: newUser } = await axios.post(
-        "http://localhost:5000/users",
+        "https://blooddonation-nu.vercel.app/users",
         formData
       );
       setUsers((prev) => [...prev, newUser]);
@@ -108,6 +108,9 @@ const Register = () => {
       });
 
       navigate(location.state?.from || "/");
+      setTimeout(()=>{
+        window.location.reload();
+      },500)
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -137,7 +140,7 @@ const Register = () => {
       };
 
       const { data: newUser } = await axios.post(
-        "http://localhost:5000/users",
+        "https://blooddonation-nu.vercel.app/users",
         formData
       );
       setUsers((prev) => [...prev, newUser]);
@@ -151,6 +154,9 @@ const Register = () => {
       });
 
       navigate(location.state?.from || "/");
+      setTimeout(()=>{
+        window.location.reload();
+      },500)
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -242,11 +248,12 @@ const Register = () => {
           >
             <FcGoogle /> Google Sign Up
           </button>
-
-          <Link to="/Login" className="link link-primary text-center block">
-            Already have an account? Login
-          </Link>
-
+          <div className="text-sm text-center mt-2">
+            Already have an account?
+            <Link to="/Login" className="link link-primary text-center block">
+              Login
+            </Link>
+          </div>
           <button type="submit" className="btn btn-neutral w-full">
             Register
           </button>
