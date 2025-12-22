@@ -1,17 +1,43 @@
-# React + Vite
+# Project Name
+**Blood Donation Management System**  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Purpose
+The purpose of this project is to create a user-friendly platform that helps manage blood donation requests efficiently. It connects donors, volunteers, and admins in one system to ensure timely blood donations and proper request management.
 
-Currently, two official plugins are available:
+## 🌐 Live URL
+🔗 **https://blood-donationnn.netlify.app/**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Key Features
+- 🔐 User authentication (Register / Login)
+- 🩸 Create and manage blood donation requests
+- 👥 Role-based access system (Admin, Donor, Volunteer)
+- 📋 View and respond to donation requests
+- 🛠️ Admin dashboard for managing users and requests
+- 📊 Donation and funding history in tabular format
+- 🔒 Secure API with JWT authorization
+- 📱 Fully responsive design (mobile & desktop)
 
-## React Compiler
+## 📦 NPM Packages Used
+### Frontend
+- **react**
+- **react-router-dom**
+- **axios**
+- **firebase**
+- **tailwindcss**
+- **daisyui**
+- **sweetalert2**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Backend
+- **express**
+- **cors**
+- **mongodb**
+- **dotenv**
+- **jsonwebtoken**
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# Blood-Donation
+## 🛠️ Technologies Used
+- React.js
+- Node.js
+- Express.js
+- MongoDB
+- Firebase Authentication
+- Tailwind CSS
