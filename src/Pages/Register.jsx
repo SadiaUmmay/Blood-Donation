@@ -65,7 +65,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(
-        "https://api.imgbb.com/1/upload?expiration=600&key=e0b53ef860f1e0c2b3d9621289c57042",
+        "https://api.imgbb.com/1/upload?key=e0b53ef860f1e0c2b3d9621289c57042",
         form,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

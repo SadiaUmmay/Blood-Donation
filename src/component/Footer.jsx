@@ -53,7 +53,7 @@ const Footer = () => {
             {[
               { to: '/', label: 'Home' },
               { to: '/donation-requests', label: 'Donation Requests' },
-              { to: '/search-donors', label: 'Search Donors' },
+              { to: '/search', label: 'Search Donors' },
               { to: '/funding', label: 'Funding' }
             ].map((link) => (
               <Link 
@@ -79,9 +79,9 @@ const Footer = () => {
           <div className="space-y-3">
             {[
               { to: '/contact', label: 'Contact Us' },
-              { to: '/register', label: 'Become a Donor' },
-              { to: '/faq', label: 'FAQ' },
-              { to: '/terms', label: 'Terms & Conditions' }
+              { to: '/signup', label: 'Become a Donor' },
+              { to: '/about', label: 'FAQ' },
+              { to: '/blog', label: 'Terms & Conditions' }
             ].map((link) => (
               <Link 
                 key={link.to}

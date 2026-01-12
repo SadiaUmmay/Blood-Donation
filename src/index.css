@@ -8,8 +8,6 @@
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
-
-  /* Add these to your global CSS file */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -98,3 +96,6 @@
   .animate-line-expand {
     animation: lineExpand 1s ease-out forwards;
   }
+
+ 
+  
